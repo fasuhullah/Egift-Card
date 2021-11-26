@@ -15,10 +15,12 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
-import com.egiftcard1.entity.GiftRecdDetails;
+import com.egiftcard1.entity.GiftReceivedDetails;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
 @Entity
+
 public class Customer implements Serializable{
 
 	private static final long serialVersionID = 1L;
@@ -49,8 +51,9 @@ public class Customer implements Serializable{
 	@NotEmpty(message = "Address is required")
 	private String address;
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "recdUserId")
-	private List<GiftRecdDetails> userRecdDetails;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "receivedUserId")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private List<GiftReceivedDetails> userRecdDetails;
 	
 	public Customer() {
 		super();

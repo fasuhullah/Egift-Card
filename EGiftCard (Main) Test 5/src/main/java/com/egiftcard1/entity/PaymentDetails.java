@@ -4,11 +4,18 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+
 
 @Entity
 @Table(name = "PaymentDetails")
@@ -44,13 +51,11 @@ public class PaymentDetails implements Serializable {
 	@Pattern(regexp = "^[0-9]{3}$", message = "CVV should be of 3 digits ")
 	private String cVV;
 
-	//@ManyToOne 
-	//(name ="userGift_Id")
-	/*private UserGiftDetails userGiftIdForPayment;
-		// @NotFound(action=NotFoundAction.IGNORE)
-		// private User_Gift_details userGiftId;
-		// create getter n setter
-*/
+	@ManyToOne
+	@JoinColumn
+	@NotFound(action=NotFoundAction.IGNORE)
+	private UserGiftDetails userGiftDetails;
+
 	
 	
 	public PaymentDetails() {

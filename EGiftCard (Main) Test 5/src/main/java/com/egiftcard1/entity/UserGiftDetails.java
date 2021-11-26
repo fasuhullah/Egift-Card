@@ -3,6 +3,7 @@ package com.egiftcard1.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class UserGiftDetails implements Serializable {
@@ -27,42 +31,48 @@ public class UserGiftDetails implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "User_Id")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private Customer user;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name = "giftCard_Id")
-	private GiftCard giftCard;
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private GiftCard giftCard;*/
 	
-	@ManyToMany(mappedBy = "userGiftId")
-	private List<GiftRecdDetails> giftRecdDetails = new ArrayList<>();
+	/*@ManyToMany(mappedBy = "userGiftId")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private List<GiftReceivedDetails> giftRecdDetails = new ArrayList<>();*/
 	
-	@ManyToMany(mappedBy = "userGiftDetails")
-	private List<GiftRedeemDetails> giftRedDDetails;
+	/*@ManyToMany(mappedBy = "userGiftDetails")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private List<GiftRedeemDetails> giftRedDDetails;*/
 	
-	private float giftCardAmount = 1000f;
+	private float giftCardAmount;
 	private Date giftCardIssueDate;
-	private boolean reloadable = true;
-	private String recipientsName = "najeeb";
-	private String recipientsMobileNumber ="939256545";
-	private String recipientsEmail = "cricpunterfasi@gmail.com";
-	private String delivaryType ="yes";
+	private boolean reloadable;
+	private String recipientsName;
+	private String recipientsMobileNumber;
+	private String recipientsEmail;
+	private String delivaryType;
 	private LocalDate scheduledelivary;
-	/*@OneToMany(mappedBy = "userGiftIdForPayment")
-	private List<PaymentDetails> paymentDetails;*/
-	// @ManyToOne
-	// private Personalize personalizeId;
+	@OneToMany(mappedBy = "userGiftDetails")
+	private List<PaymentDetails> paymentDetails;
 	
 	
 
-	public UserGiftDetails(Integer userGiftId, Customer user, float giftCardAmount, Date giftCardIssueDate, boolean reloadable,
+	
+
+
+	public UserGiftDetails() {
+		super();
+	}
+
+
+	public UserGiftDetails(Integer userGiftId, float giftCardAmount, Date giftCardIssueDate, boolean reloadable,
 			String recipientsName, String recipientsMobileNumber, String recipientsEmail, String delivaryType,
 			LocalDate scheduledelivary) {
 		super();
 		this.userGiftId = userGiftId;
-		this.user = user;
-		//this.giftCard = giftCard;
-		//this.giftRecdDetails = giftRecdDetails;
-		//this.giftRedDDetails = giftRedDDetails;
 		this.giftCardAmount = giftCardAmount;
 		this.giftCardIssueDate = giftCardIssueDate;
 		this.reloadable = reloadable;
@@ -71,12 +81,6 @@ public class UserGiftDetails implements Serializable {
 		this.recipientsEmail = recipientsEmail;
 		this.delivaryType = delivaryType;
 		this.scheduledelivary = scheduledelivary;
-		//this.paymentDetails = paymentDetails;
-	}
-
-
-	public UserGiftDetails() {
-		super();
 	}
 
 
@@ -97,13 +101,13 @@ public class UserGiftDetails implements Serializable {
 		this.user = userId;
 	}
 
-	public GiftCard getGiftCardId() {
+	/*public GiftCard getGiftCardId() {
 		return giftCard;
 	}
 
 	public void setGiftCardId(GiftCard giftCardId) {
 		this.giftCard = giftCardId;
-	}
+	}*/
 
 	public float getGiftCardAmount() {
 		return giftCardAmount;
@@ -169,12 +173,6 @@ public class UserGiftDetails implements Serializable {
 		this.scheduledelivary = scheduledelivary;
 	}
 
-	/*
-	 * public Personalize getPersonalizeId() { return personalizeId; }
-	 * 
-	 * public void setPersonalizeId(Personalize personalizeId) { this.personalizeId
-	 * = personalizeId; }
-	 */
 
 	public Customer getUser_Id() {
 		return user;
@@ -184,19 +182,19 @@ public class UserGiftDetails implements Serializable {
 		this.user = user_Id;
 	}
 
-	public GiftCard getGiftCard_Id() {
+	/*public GiftCard getGiftCard_Id() {
 		return giftCard;
 	}
 
 	public void setGiftCard_Id(GiftCard giftCard_Id) {
 		this.giftCard = giftCard_Id;
-	}
+	}*/
 
-/*	public List<GiftRecdDetails> getGiftRecdDetails() {
+	/*public List<GiftReceivedDetails> getGiftRecdDetails() {
 		return giftRecdDetails;
 	}
 
-	public void setGiftRecdDetails(List<GiftRecdDetails> giftRecdDetails) {
+	public void setGiftRecdDetails(List<GiftReceivedDetails> giftRecdDetails) {
 		this.giftRecdDetails = giftRecdDetails;
 	}
 
@@ -215,12 +213,14 @@ public class UserGiftDetails implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserGiftDetails [userGiftId=" + userGiftId + ", giftCard=" + giftCard + ", giftCardAmount="
-				+ giftCardAmount + ", giftCardIssueDate=" + giftCardIssueDate + ", reloadable=" + reloadable
-				+ ", recipientsName=" + recipientsName + ", recipientsMobileNumber=" + recipientsMobileNumber
-				+ ", recipientsEmail=" + recipientsEmail + ", delivaryType=" + delivaryType + ", scheduledelivary="
-				+ scheduledelivary + "]";
+		return "UserGiftDetails [userGiftId=" + userGiftId + ", giftCardAmount=" + giftCardAmount
+				+ ", giftCardIssueDate=" + giftCardIssueDate + ", reloadable=" + reloadable + ", recipientsName="
+				+ recipientsName + ", recipientsMobileNumber=" + recipientsMobileNumber + ", recipientsEmail="
+				+ recipientsEmail + ", delivaryType=" + delivaryType + ", scheduledelivary=" + scheduledelivary + "]";
+	}
+
+
+	
 	}
 
 	
-}

@@ -25,36 +25,37 @@ public class GiftRedeemDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer gift_redeem_id;
-	private boolean redeemStatus;
-	private Date giftRedeemDate;
-	@NotEmpty(message="redeem amount needed")
-	private float giftRedeemAmount;
-	@NotEmpty(message="balance cannot be zero")
-	private float balance;
+	private Integer giftRedeemId; //Gift card redeem Id
+	private boolean redeemStatus; //Gift card redeem status
+	private Date giftRedeemDate; //date on which the card was redeemed
+	@NotEmpty(message = "redeem amount needed")
+	private float giftRedeemAmount; //Amount redeemed using the gift card
+	@NotEmpty(message = "balance cannot be zero")
+	private float balance; //Balance of Gift card
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name ="user_gift_details")
+	@JoinColumn(name = "user_gift_details")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private List<UserGiftDetails> userGiftDetails = new ArrayList<>();
 
 	public GiftRedeemDetails() {
 		super();
 	}
-	public GiftRedeemDetails(Integer gift_redeem_id, boolean redeemStatus, Date giftRedeemDate, float giftRedeemAmount,
+
+	public GiftRedeemDetails(Integer giftRedeemId, boolean redeemStatus, Date giftRedeemDate, float giftRedeemAmount,
 			float balance) {
-		this.gift_redeem_id = gift_redeem_id;
+		this.giftRedeemId = giftRedeemId;
 		this.redeemStatus = redeemStatus;
 		this.giftRedeemDate = giftRedeemDate;
 		this.giftRedeemAmount = giftRedeemAmount;
 		this.balance = balance;
 	}
 
-	public Integer getGift_redeem_id() {
-		return gift_redeem_id;
+	public Integer getGiftRedeemId() {
+		return giftRedeemId;
 	}
 
-	public void setGift_redeem_id(Integer gift_redeem_id) {
-		this.gift_redeem_id = gift_redeem_id;
+	public void setGiftRedeemId(Integer giftRedeemId) {
+		this.giftRedeemId = giftRedeemId;
 	}
 
 	public boolean isRedeemStatus() {
@@ -91,7 +92,7 @@ public class GiftRedeemDetails implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gift_redeem_details [gift_redeem_id=" + gift_redeem_id + ", redeemStatus=" + redeemStatus
+		return "Gift_redeem_details [gift_redeem_id=" + giftRedeemId + ", redeemStatus=" + redeemStatus
 				+ ", giftRedeemDate=" + giftRedeemDate + ", giftRedeemAmount=" + giftRedeemAmount + ", balance="
 				+ balance + ",]";
 	}

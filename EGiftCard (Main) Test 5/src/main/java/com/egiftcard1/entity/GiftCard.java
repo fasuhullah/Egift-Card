@@ -1,8 +1,15 @@
 package com.egiftcard1.entity;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class GiftCard implements Serializable {
@@ -14,6 +21,7 @@ public class GiftCard implements Serializable {
 	@Id
 	private int giftCardId;
 	/*@OneToMany (mappedBy = "giftCard")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private List<UserGiftDetails> userGiftDetails;*/
 	private String giftCardName;
 	private String brandList;
@@ -22,13 +30,14 @@ public class GiftCard implements Serializable {
 	private float minAmount=100;
 	private float maxamount =10000;
 	private String aboutGiftCard;
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
 	public GiftCard() {
+		super();
 	}
-	
+	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
 	public GiftCard(int giftCardId, String giftCardName, String brandList,
 			String redemptiondetails, float minAmount, float maxamount, String aboutGiftCard) {
 		this.giftCardId = giftCardId;
-		//this.userGiftDetails = userGiftDetails;
 		this.giftCardName = giftCardName;
 		this.brandList = brandList;
 		this.redemptiondetails = redemptiondetails;
@@ -80,8 +89,8 @@ public class GiftCard implements Serializable {
 	public void setAboutGiftCard(String aboutGiftCard) {
 		this.aboutGiftCard = aboutGiftCard;
 	}
-	
-	/*public List<UserGiftDetails> getUserGiftDetails() {
+	/*
+	public List<UserGiftDetails> getUserGiftDetails() {
 		return Collections.unmodifiableList(userGiftDetails);
 	}
 	public void setUserGiftDetails(List<UserGiftDetails> userGiftDetails) {

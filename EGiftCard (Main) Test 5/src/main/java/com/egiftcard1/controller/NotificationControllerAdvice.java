@@ -18,7 +18,7 @@ public class NotificationControllerAdvice {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
 	}
-	
+
 	@ExceptionHandler(value = { InvalidCustomerIdException.class })
 	// @ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> invalidCustomerIdException(Exception e) {

@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Gift_Recd_details")
-public class GiftRecdDetails implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class GiftReceivedDetails implements Serializable {
 
 	/**
 	 * 
@@ -27,21 +28,18 @@ public class GiftRecdDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer serialNumber;
+	private Integer serialNumber; 
 	private Date giftCardReceivedDate;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name ="user_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-	private List<Customer> recdUserId = new ArrayList<>();
-	@ManyToMany
-	@JoinColumn(name = "User_GiftId")
-	private List<UserGiftDetails> userGiftId = new ArrayList<>();
-
-	public GiftRecdDetails() {
+	private List<Customer> receivedUserId = new ArrayList<>();
+	
+	public GiftReceivedDetails() {
 		super();
 	}
 
-	public GiftRecdDetails(Integer serialNumber, Date giftCardReceivedDate) {
+	public GiftReceivedDetails(Integer serialNumber, Date giftCardReceivedDate) {
 		super();
 		this.serialNumber = serialNumber;
 		this.giftCardReceivedDate = giftCardReceivedDate;
@@ -64,20 +62,22 @@ public class GiftRecdDetails implements Serializable {
 	}
 
 	public List<Customer> getRecdUserId() {
-		return recdUserId;
+		return receivedUserId;
 	}
 
 	public void setRecdUserId(List<Customer> recdUserId) {
-		this.recdUserId = recdUserId;
+		this.receivedUserId = recdUserId;
 	}
 
 	public void addUser(Customer usr) {
 		this.getRecdUserId().add(usr);
 	}
+
 	@Override
 	public String toString() {
-		return "Gift_recd_details [SerialNumber=" + serialNumber + ", giftCardReceivedDate=" + giftCardReceivedDate
-				+ " userId=" + recdUserId + ",]";
+		return "GiftRecdDetails [serialNumber=" + serialNumber + ", giftCardReceivedDate=" + giftCardReceivedDate
+				+ ", recdUserId=" + receivedUserId + ",]";
 	}
+	
 
 }
